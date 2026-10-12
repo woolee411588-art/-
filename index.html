@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>백연농가</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<style>
+html,body{margin:0}img{max-width:100%}
+/* Layout: full-bleed alternating bands (white / soft grey / one black band for the jang story),
+   each with a centered headline stack and a narrow 980px content column. The jangdok yard photo carries the hero. */
+:root{
+  --bg:#ffffff; --band:#f5f5f7; --card:#ffffff;
+  --fg:#1d1d1f; --muted:#6e6e73; --line:#d2d2d7;
+  --link:#0066cc; --btn:#0071e3; --btn-fg:#ffffff;
+  --inv-bg:#000000; --inv-fg:#f5f5f7; --inv-muted:#a1a1a6;
+  --nav:rgba(255,255,255,.78);
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Display","Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+  --gutter:22px; --col:980px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#000000; --band:#101012; --card:#1d1d1f;
+    --fg:#f5f5f7; --muted:#a1a1a6; --line:#424245;
+    --link:#2997ff; --btn:#0071e3; --btn-fg:#ffffff;
+    --inv-bg:#1d1d1f; --inv-fg:#f5f5f7; --inv-muted:#a1a1a6;
+    --nav:rgba(22,22,23,.78); color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#000000; --band:#101012; --card:#1d1d1f;
+  --fg:#f5f5f7; --muted:#a1a1a6; --line:#424245;
+  --link:#2997ff; --btn:#0071e3; --btn-fg:#ffffff;
+  --inv-bg:#1d1d1f; --inv-fg:#f5f5f7; --inv-muted:#a1a1a6;
+  --nav:rgba(22,22,23,.78); color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:17px;line-height:1.6;
+  letter-spacing:-.01em;word-break:keep-all;-webkit-font-smoothing:antialiased}
+a{color:var(--link);text-decoration:none}
+a:hover{text-decoration:underline}
+:focus-visible{outline:3px solid var(--link);outline-offset:3px;border-radius:6px}
+h1,h2,h3,p{margin:0}
+h1,h2,h3{text-wrap:balance;letter-spacing:-.03em;line-height:1.12;font-weight:700}
+
+/* nav */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--nav);
+  backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);
+  border-bottom:1px solid var(--line)}
+.nav-in{max-width:var(--col);margin:0 auto;padding:0 var(--gutter);height:48px;display:flex;align-items:center;gap:20px}
+.brand{font-weight:700;font-size:17px;color:var(--fg);margin-right:auto;white-space:nowrap}
+.nav-links{display:flex;gap:26px;font-size:13px}
+.nav-links a{color:var(--fg);opacity:.82}
+.nav-links a:hover{opacity:1;text-decoration:none}
+@media (max-width:520px){.nav-links{gap:16px}.nav-links .opt{display:none}}
+
+/* bands */
+.band{padding-block:96px;padding-inline:var(--gutter)}
+.band.grey{background:var(--band)}
+.band.inv{background:var(--inv-bg);color:var(--inv-fg)}
+.wrap{max-width:var(--col);margin:0 auto}
+.head{display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;margin-bottom:56px}
+.eyebrow{font-size:17px;font-weight:600;color:var(--muted)}
+.inv .eyebrow,.inv .lede{color:var(--inv-muted)}
+h2{font-size:clamp(34px,6vw,56px)}
+.lede{font-size:clamp(18px,2.4vw,23px);line-height:1.45;color:var(--muted);max-width:30em}
+@media (max-width:600px){.band{padding-block:68px}.head{margin-bottom:40px}}
+
+/* hero */
+.hero{padding-block:84px 96px;padding-inline:var(--gutter);text-align:center;overflow:hidden}
+.hero .stack{display:flex;flex-direction:column;align-items:center;gap:18px}
+h1{font-size:clamp(46px,10vw,104px);letter-spacing:-.045em;line-height:1.04}
+.hero .lede{max-width:24em}
+.cta{display:flex;flex-wrap:wrap;gap:14px 22px;justify-content:center;align-items:center;margin-top:10px}
+.pill{display:inline-flex;align-items:center;background:var(--btn);color:var(--btn-fg);border:0;border-radius:980px;
+  padding:11px 22px;font:inherit;font-size:17px;cursor:pointer}
+.pill:hover{text-decoration:none;filter:brightness(1.08)}
+.more::after{content:" ›"}
+.hero-photo{display:block;width:min(100%,1200px);aspect-ratio:16/9;object-fit:cover;object-position:50% 62%;
+  border-radius:28px;margin:56px auto 0;background:var(--band)}
+.card.media{padding:0;gap:0;overflow:hidden}
+.card.media img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;background:var(--line)}
+.card.media.wide{grid-column:1/-1}
+.card.media.wide img{aspect-ratio:2/1}
+.card.media .txt{padding:30px 36px 38px;display:flex;flex-direction:column;gap:12px}
+a.vlink{color:var(--fg);transition:transform .2s ease}
+a.vlink:hover{text-decoration:none;transform:translateY(-3px)}
+@media (prefers-reduced-motion:reduce){a.vlink{transition:none}a.vlink:hover{transform:none}}
+.vlink .go{color:var(--link);margin-top:auto;padding-top:8px}
+.play{width:52px;height:52px;border-radius:50%;background:var(--fg);position:relative;margin-bottom:10px;flex:none}
+.play::after{content:"";position:absolute;left:21px;top:16px;border-style:solid;border-width:10px 0 10px 16px;
+  border-color:transparent transparent transparent var(--bg)}
+footer{border-top:1px solid var(--line)}
+.shots{display:grid;gap:20px;grid-template-columns:repeat(2,minmax(0,1fr));margin-bottom:64px}
+.shots img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:28px}
+@media (max-width:760px){.shots{grid-template-columns:1fr}.card.media.wide img{aspect-ratio:3/2}}
+@media (max-width:600px){.hero-photo,.shots img{border-radius:22px}.hero-photo{aspect-ratio:4/3}.card.media .txt{padding:24px 26px 30px}}
+
+/* cards */
+.grid{display:grid;gap:20px;grid-template-columns:repeat(2,minmax(0,1fr))}
+.grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:760px){.grid,.grid.three{grid-template-columns:1fr}}
+.card{background:var(--card);border-radius:28px;padding:40px 36px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.band:not(.grey) .card{background:var(--band)}
+.card .tag{font-size:14px;font-weight:600;color:var(--muted)}
+.card h3{font-size:clamp(26px,3.4vw,34px)}
+.card p{color:var(--muted)}
+@media (max-width:600px){.card{padding:32px 26px;border-radius:22px}}
+
+/* inverse band facts */
+.facts{display:grid;gap:36px 48px;grid-template-columns:repeat(3,minmax(0,1fr));text-align:center}
+@media (max-width:760px){.facts{grid-template-columns:1fr}}
+.facts h3{font-size:28px;margin-bottom:8px}
+.facts p{color:var(--inv-muted)}
+.shop{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;margin-top:72px}
+.shop h3{font-size:clamp(26px,3.4vw,34px)}
+.shop p{color:var(--inv-muted)}
+.shop .pill{margin-top:10px}
+.pill.buy{padding:5px 14px;font-size:13px;white-space:nowrap}
+@media (max-width:520px){.nav-in{gap:14px}}
+
+/* visit */
+.info{border-top:1px solid var(--line);margin:0}
+.row{display:grid;grid-template-columns:140px minmax(0,1fr) auto;gap:8px 20px;align-items:center;
+  padding:22px 0;border-bottom:1px solid var(--line)}
+.row dt{color:var(--muted);font-size:15px}
+.row dd{margin:0;font-size:clamp(19px,2.6vw,24px);font-weight:600;letter-spacing:-.02em;user-select:all;min-width:0}
+.row dd.plain{font-weight:400;font-size:17px;color:var(--muted);user-select:auto}
+.copy{background:none;border:1px solid var(--line);color:var(--link);border-radius:980px;padding:6px 16px;
+  font:inherit;font-size:14px;cursor:pointer;white-space:nowrap}
+.copy:hover{border-color:var(--link)}
+@media (max-width:600px){.row{grid-template-columns:1fr auto}.row dt{grid-column:1/-1}}
+.maps{display:flex;flex-wrap:wrap;gap:12px 28px;margin-top:28px;font-size:17px}
+
+footer{padding-block:28px 48px;padding-inline:var(--gutter);background:var(--band);color:var(--muted);font-size:12px;line-height:1.7}
+footer .wrap{display:flex;flex-direction:column;gap:8px}
+footer hr{border:0;border-top:1px solid var(--line);width:100%;margin:6px 0}
+</style>
+
+</head>
+<body>
+<header class="nav">
+  <div class="nav-in">
+    <a class="brand" href="#top">백연농가</a>
+    <nav class="nav-links" aria-label="주요 메뉴">
+      <a href="#table">밥상</a>
+      <a href="#jang">장</a>
+      <a class="opt" href="#tea">찻집</a>
+      <a class="opt" href="#nearby">주변</a>
+      <a href="#video">영상</a>
+      <a href="#visit">오시는 길</a>
+    </nav>
+    <a class="pill buy" href="https://smartstore.naver.com/100yeonfarm?NaPm=ct%3Dmv2n4zsd%7Cci%3Dcheckout%7Ctr%3Dds%7Ctrx%3Dnull%7Chk%3Db5f71ba41fb8902d1e29109eac446cdb887084ea" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">구매</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="stack">
+      <p class="eyebrow">강원 영월 · 상동읍</p>
+      <h1>산이 차린<br>밥상.</h1>
+      <p class="lede">직접 담근 장으로 끓인 곤드레 된장국, 갓 지은 돌솥 팥밥. 숲속 산촌마을의 한 끼.</p>
+      <div class="cta">
+        <a class="pill" href="#visit">오시는 길</a>
+        <a class="more" href="#table">밥상 보기</a>
+        <a class="more" href="https://smartstore.naver.com/100yeonfarm?NaPm=ct%3Dmv2n4zsd%7Cci%3Dcheckout%7Ctr%3Dds%7Ctrx%3Dnull%7Chk%3Db5f71ba41fb8902d1e29109eac446cdb887084ea" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">장 구매하기</a>
+      </div>
+    </div>
+    <img class="hero-photo" src="img/jangdok.jpg" alt="산자락 아래 마당에 줄지어 선 백연농가 장독대" width="1280" height="960">
+  </section>
+
+  <section class="band grey" id="table">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">밥상</p>
+        <h2>곤드레, 그리고 장.</h2>
+        <p class="lede">백연농가의 대표 메뉴는 곤드레 정식입니다.</p>
+      </div>
+      <div class="grid">
+        <article class="card media wide">
+          <img src="img/table.jpg" alt="돌솥 팥밥, 고등어구이, 곤드레 된장국과 나물 반찬이 오른 한 상" width="1280" height="630" loading="lazy">
+          <div class="txt">
+            <p class="tag">대표 메뉴</p>
+            <h3>고등어 곤드레정식</h3>
+            <p>노릇하게 구운 고등어와 곤드레 된장국, 나물 반찬이 한 상에 오릅니다.</p>
+          </div>
+        </article>
+        <article class="card media">
+          <img src="img/rice.jpg" alt="돌솥에 갓 지은 팥밥" width="1000" height="1000" loading="lazy">
+          <div class="txt">
+            <p class="tag">밥</p>
+            <h3>돌솥 팥밥</h3>
+            <p>팥과 잡곡을 넣어 돌솥에 짓습니다.</p>
+          </div>
+        </article>
+        <article class="card media">
+          <img src="img/tray.jpg" alt="백연농가 주방 글씨가 새겨진 돌솥 뚜껑과 곤드레 된장국" width="1000" height="1000" loading="lazy">
+          <div class="txt">
+            <p class="tag">국</p>
+            <h3>곤드레 된장국</h3>
+            <p>직접 담근 장으로 끓입니다. 장독대에서 밥상까지 한 걸음입니다.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="band inv" id="jang">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">장</p>
+        <h2>맛은 장독대에서<br>시작합니다.</h2>
+        <p class="lede">마당에 줄지어 선 항아리에서 장이 익습니다.</p>
+      </div>
+      <div class="shots">
+        <img src="img/doenjang-set.jpg" alt="2년, 5년 된장 병과 메주콩" width="510" height="314" loading="lazy">
+        <img src="img/doenjang-5y.jpg" alt="5년 전통된장 병" width="510" height="359" loading="lazy">
+      </div>
+      <div class="facts">
+        <div><h3>직접 담근 장</h3><p>밥상에 오르는 된장국은 이곳에서 담근 장으로 끓입니다.</p></div>
+        <div><h3>2년, 그리고 5년</h3><p>2년 된장과 5년 전통된장을 병에 담아 냅니다.</p></div>
+        <div><h3>영월의 장</h3><p>2022년 영월군 농촌 신활력 플러스 사업 보도에서 장류 생산농가로 소개됐습니다.</p></div>
+      </div>
+      <div class="shop">
+        <h3>집에서도 백연농가의 장을.</h3>
+        <p>네이버 스마트스토어에서 주문하고 결제할 수 있습니다.</p>
+        <a class="pill" href="https://smartstore.naver.com/100yeonfarm?NaPm=ct%3Dmv2n4zsd%7Cci%3Dcheckout%7Ctr%3Dds%7Ctrx%3Dnull%7Chk%3Db5f71ba41fb8902d1e29109eac446cdb887084ea" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">스마트스토어에서 구매</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="tea">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">찻집</p>
+        <h2>밥 먹고, 차 한 잔.</h2>
+        <p class="lede">식당 곁에 산속 찻집과 황토집이 함께 있습니다.</p>
+      </div>
+      <div class="grid three">
+        <article class="card"><h3>산속 찻집</h3><p>80년대 분위기가 그대로 남아 있는 작은 찻집입니다.</p></article>
+        <article class="card"><h3>황토집</h3><p>흙으로 지은 집이 장독대 옆에 서 있습니다.</p></article>
+        <article class="card"><h3>숲속 산촌마을</h3><p>상동읍 덕구로를 따라 들어온 숲 한가운데에 있습니다.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="band grey" id="nearby">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">주변</p>
+        <h2>하루 코스로 묶기 좋은 곳.</h2>
+      </div>
+      <div class="grid">
+        <article class="card">
+          <p class="tag">상동읍</p>
+          <h3>선바위골 국민여가캠핑장</h3>
+          <p>같은 상동읍에 있는 캠핑장입니다.</p>
+        </article>
+        <article class="card">
+          <p class="tag">영월</p>
+          <h3>젊은달와이파크</h3>
+          <p>영월의 미술관 겸 복합 문화 공간입니다.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="video">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">영상</p>
+        <h2>영상으로 먼저 만나기.</h2>
+        <p class="lede">다녀간 분이 유튜브에 올린 방문 영상입니다.</p>
+      </div>
+      <div class="grid">
+        <a class="card vlink" href="https://www.youtube.com/watch?v=8ni_ECQjAf4" target="_blank" rel="noopener">
+          <span class="play" aria-hidden="true"></span>
+          <p class="tag">방문 영상</p>
+          <h3>80년대 분위기가 물씬 풍기는 카페가 산속에 있다</h3>
+          <p>산속 찻집과 곤드레 된장국을 담은 영상입니다.</p>
+          <span class="go more">유튜브에서 보기</span>
+        </a>
+        <a class="card vlink" href="https://www.youtube.com/results?search_query=%EC%98%81%EC%9B%94+%EB%B0%B1%EC%97%B0%EB%86%8D%EA%B0%80" target="_blank" rel="noopener">
+          <span class="play" aria-hidden="true"></span>
+          <p class="tag">더 보기</p>
+          <h3>유튜브에서 백연농가 찾아보기</h3>
+          <p>‘영월 백연농가’ 검색 결과로 이동합니다.</p>
+          <span class="go more">검색 결과 보기</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="band grey" id="visit">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">오시는 길</p>
+        <h2>오시기 전에<br>전화 한 통.</h2>
+        <p class="lede">영업시간과 휴무일, 가격은 전화로 확인해 주세요.</p>
+      </div>
+      <dl class="info">
+        <div class="row">
+          <dt>주소</dt>
+          <dd id="addr">강원특별자치도 영월군 상동읍 덕구로 763</dd>
+          <button class="copy" id="copy-addr" type="button" data-copy="addr">복사</button>
+        </div>
+        <div class="row">
+          <dt>전화</dt>
+          <dd id="tel">033-378-6452</dd>
+          <button class="copy" id="copy-tel" type="button" data-copy="tel">복사</button>
+        </div>
+        <div class="row">
+          <dt>영업시간 · 휴무</dt>
+          <dd class="plain">전화 문의</dd>
+          <span></span>
+        </div>
+      </dl>
+      <div class="maps">
+        <a class="more" href="https://map.naver.com/p/search/%EA%B0%95%EC%9B%90%ED%8A%B9%EB%B3%84%EC%9E%90%EC%B9%98%EB%8F%84%20%EC%98%81%EC%9B%94%EA%B5%B0%20%EC%83%81%EB%8F%99%EC%9D%8D%20%EB%8D%95%EA%B5%AC%EB%A1%9C%20763" target="_blank" rel="noopener">네이버 지도에서 보기</a>
+        <a class="more" href="https://map.kakao.com/?q=%EA%B0%95%EC%9B%90%ED%8A%B9%EB%B3%84%EC%9E%90%EC%B9%98%EB%8F%84%20%EC%98%81%EC%9B%94%EA%B5%B0%20%EC%83%81%EB%8F%99%EC%9D%8D%20%EB%8D%95%EA%B5%AC%EB%A1%9C%20763" target="_blank" rel="noopener">카카오맵에서 보기</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>이 페이지의 내용은 영월군청 아동급식 가맹점 현황, 프레시안 보도(2022-11-04), 방문 영상 설명을 바탕으로 2026년 10월 9일에 정리했습니다. 방문 영상은 2~3년 전 자료여서 지금의 메뉴나 운영과 다를 수 있습니다.</p>
+    <hr>
+    <p>백연농가 · 강원특별자치도 영월군 상동읍 덕구로 763 · 033-378-6452 · <a href="https://smartstore.naver.com/100yeonfarm?NaPm=ct%3Dmv2n4zsd%7Cci%3Dcheckout%7Ctr%3Dds%7Ctrx%3Dnull%7Chk%3Db5f71ba41fb8902d1e29109eac446cdb887084ea" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">네이버 스마트스토어</a></p>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll('.copy').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var el = document.getElementById(btn.dataset.copy);
+    var done = function(){ btn.textContent = '복사됨'; setTimeout(function(){ btn.textContent = '복사'; }, 1600); };
+    var select = function(){
+      var r = document.createRange(); r.selectNodeContents(el);
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      btn.textContent = '선택됨'; setTimeout(function(){ btn.textContent = '복사'; }, 1600);
+    };
+    try { navigator.clipboard.writeText(el.textContent.trim()).then(done, select); }
+    catch (e) { select(); }
+  });
+});
+</script>
+
+</body>
+</html>
