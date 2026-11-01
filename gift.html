@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>백연농가 선물하기</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<style>
+html,body{margin:0}img{max-width:100%}
+:root{
+  --bg:#ffffff; --band:#f5f5f7; --card:#ffffff; --sheet:#ffffff;
+  --fg:#1d1d1f; --muted:#6e6e73; --line:#e5e5ea;
+  --accent:#ffd84d; --accent-fg:#1d1d1f; --link:#0066cc;
+  --chip:#f2f2f4; --shadow:0 8px 30px rgba(0,0,0,.08);
+  --font:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+  --gutter:16px; --col:640px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#000000; --band:#101012; --card:#1c1c1e; --sheet:#1c1c1e;
+    --fg:#f5f5f7; --muted:#a1a1a6; --line:#2c2c2e;
+    --accent:#ffd84d; --accent-fg:#1d1d1f; --link:#2997ff;
+    --chip:#2c2c2e; --shadow:0 8px 30px rgba(0,0,0,.5); color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#000000; --band:#101012; --card:#1c1c1e; --sheet:#1c1c1e;
+  --fg:#f5f5f7; --muted:#a1a1a6; --line:#2c2c2e;
+  --accent:#ffd84d; --accent-fg:#1d1d1f; --link:#2997ff;
+  --chip:#2c2c2e; --shadow:0 8px 30px rgba(0,0,0,.5); color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--band);color:var(--fg);font-family:var(--font);font-size:16px;line-height:1.55;
+  letter-spacing:-.01em;word-break:keep-all;-webkit-font-smoothing:antialiased}
+a{color:var(--link);text-decoration:none}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--link);outline-offset:2px;border-radius:8px}
+h1,h2,h3,p{margin:0}
+.app{max-width:var(--col);margin:0 auto;background:var(--bg);min-height:100vh;padding-bottom:110px}
+
+/* top bar */
+.top{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px solid var(--line);
+  display:flex;align-items:center;gap:12px;height:52px;padding:0 var(--gutter)}
+.top .back{font-size:22px;color:var(--fg);line-height:1;padding:4px}
+.top h1{font-size:17px;font-weight:700;margin-right:auto}
+.top .home{font-size:14px;color:var(--muted)}
+
+/* hero banner */
+.banner{margin:16px var(--gutter) 0;border-radius:20px;padding:26px 22px;background:linear-gradient(135deg,#3b2a1a,#6b4a2b);
+  color:#fff7e8;display:flex;flex-direction:column;gap:6px}
+.banner .eb{font-size:13px;opacity:.8}
+.banner h2{font-size:24px;line-height:1.3;letter-spacing:-.03em}
+.banner p{font-size:14px;opacity:.85}
+
+/* section */
+.sec{padding:26px var(--gutter) 6px}
+.sec h3{font-size:19px;letter-spacing:-.02em;margin-bottom:14px}
+.sec .sub{font-size:13px;color:var(--muted);margin:-10px 0 14px}
+
+/* occasion chips */
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;border:0;background:var(--chip);border-radius:999px;padding:8px 14px;font-size:14px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--fg);color:var(--bg);font-weight:600}
+
+/* products */
+.list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 12px}
+.prod{border:0;background:none;padding:0;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:6px;min-width:0}
+.thumb{position:relative;aspect-ratio:1/1;border-radius:14px;overflow:hidden;background:var(--chip);
+  display:flex;align-items:center;justify-content:center}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.thumb .jar{font-size:13px;color:var(--muted);text-align:center;padding:10px}
+.thumb .badge{position:absolute;left:8px;top:8px;background:var(--accent);color:var(--accent-fg);font-size:11px;font-weight:700;
+  border-radius:6px;padding:2px 7px}
+.prod[aria-pressed="true"] .thumb{outline:3px solid var(--fg);outline-offset:-3px}
+.prod[aria-pressed="true"] .thumb::after{content:"✓";position:absolute;right:8px;top:8px;width:26px;height:26px;border-radius:50%;
+  background:var(--fg);color:var(--bg);font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.prod .brand{font-size:12px;color:var(--muted)}
+.prod .name{font-size:15px;font-weight:500;line-height:1.35}
+.prod .price{font-size:14px;font-weight:700}
+.prod .price small{font-weight:400;color:var(--muted)}
+
+/* message card */
+.themes{display:flex;gap:10px;margin-bottom:14px}
+.theme{flex:1;border:2px solid transparent;border-radius:12px;height:46px;cursor:pointer;font-size:12px;font-weight:600}
+.theme[aria-pressed="true"]{border-color:var(--fg)}
+.t-thanks{background:#ffe9a8;color:#5a4300}
+.t-bday{background:#ffd3dc;color:#6b1f33}
+.t-holiday{background:#cfe8d4;color:#1f4d2b}
+.t-season{background:#dfe3f5;color:#28305e}
+.card-prev{border-radius:18px;padding:22px 20px;min-height:170px;display:flex;flex-direction:column;gap:10px;transition:background .2s}
+.card-prev .to{font-size:13px;font-weight:600;opacity:.75}
+.card-prev .msg{font-size:17px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere;flex:1}
+.card-prev .from{font-size:13px;text-align:right;opacity:.75}
+@media (prefers-reduced-motion:reduce){.card-prev{transition:none}}
+.field{display:flex;flex-direction:column;gap:6px;margin-top:14px}
+.field label{font-size:13px;color:var(--muted)}
+.field input,.field textarea{font:inherit;color:var(--fg);background:var(--chip);border:0;border-radius:12px;padding:12px 14px;width:100%}
+.field textarea{min-height:96px;resize:vertical}
+.count{font-size:12px;color:var(--muted);text-align:right}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+/* how */
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;counter-reset:s}
+.steps li{display:flex;gap:12px;align-items:flex-start;font-size:14px;color:var(--muted)}
+.steps li::before{counter-increment:s;content:counter(s);flex:none;width:22px;height:22px;border-radius:50%;background:var(--chip);
+  color:var(--fg);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.note{font-size:12px;color:var(--muted);padding:18px var(--gutter) 0}
+
+/* bottom bar */
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--sheet);border-top:1px solid var(--line);
+  padding:10px var(--gutter) calc(10px + env(safe-area-inset-bottom,0px))}
+.bar-in{max-width:calc(var(--col) - 2*var(--gutter));margin:0 auto;display:flex;gap:10px;align-items:center}
+.bar .sel{flex:1;min-width:0;font-size:13px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bar .sel b{color:var(--fg);font-weight:600}
+.gift{border:0;background:var(--accent);color:var(--accent-fg);font-weight:700;font-size:16px;border-radius:14px;
+  padding:14px 22px;cursor:pointer;white-space:nowrap}
+.gift:disabled{opacity:.45;cursor:not-allowed}
+
+/* sheet */
+.dim{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:30;display:none}
+.dim.on{display:block}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:31;background:var(--sheet);border-radius:22px 22px 0 0;
+  max-width:var(--col);margin:0 auto;padding:22px var(--gutter) calc(22px + env(safe-area-inset-bottom,0px));
+  transform:translateY(105%);transition:transform .25s ease;box-shadow:var(--shadow);max-height:88vh;overflow:auto}
+.sheet.on{transform:none}
+@media (prefers-reduced-motion:reduce){.sheet{transition:none}}
+.sheet h3{font-size:19px;margin-bottom:6px}
+.sheet .desc{font-size:14px;color:var(--muted);margin-bottom:16px}
+.sum{background:var(--chip);border-radius:14px;padding:14px 16px;font-size:14px;display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.sum div{display:flex;justify-content:space-between;gap:12px}
+.sum span:first-child{color:var(--muted)}
+.sum span:last-child{text-align:right;overflow-wrap:anywhere}
+.acts{display:flex;flex-direction:column;gap:10px}
+.acts .gift{width:100%;text-align:center;display:block}
+.ghost{border:1px solid var(--line);background:none;border-radius:14px;padding:13px;font-size:15px;cursor:pointer;width:100%}
+.toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);background:var(--fg);color:var(--bg);font-size:14px;
+  padding:10px 16px;border-radius:999px;z-index:40;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.on{opacity:1}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <a class="back" href="index.html" aria-label="백연농가 홈으로">‹</a>
+    <h1>백연농가 선물하기</h1>
+    <a class="home" href="index.html">홈</a>
+  </header>
+
+  <section class="banner">
+    <p class="eb">강원 영월 · 장독대에서 바로</p>
+    <h2>마음을 담아<br>장 한 병 보내세요.</h2>
+    <p>직접 담근 2년 된장, 5년 전통된장을 선물로.</p>
+  </section>
+
+  <section class="sec">
+    <h3>어떤 날인가요?</h3>
+    <div class="chips" id="occ" role="group" aria-label="선물 상황">
+      <button class="chip" type="button" data-theme="thanks" data-msg="늘 고마워요. 영월 장독대에서 익은 된장 한 병 보내요." aria-pressed="true">감사</button>
+      <button class="chip" type="button" data-theme="bday" data-msg="생일 축하해요! 건강한 밥상 차리시라고 장 한 병 보냅니다." aria-pressed="false">생일</button>
+      <button class="chip" type="button" data-theme="holiday" data-msg="풍성한 명절 보내세요. 정성으로 담근 장을 함께 보냅니다." aria-pressed="false">명절</button>
+      <button class="chip" type="button" data-theme="season" data-msg="날이 쌀쌀해졌어요. 따뜻한 된장국 한 그릇 드세요." aria-pressed="false">안부</button>
+      <button class="chip" type="button" data-theme="thanks" data-msg="부모님, 늘 건강하세요. 사랑합니다." aria-pressed="false">부모님께</button>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h3>선물 고르기</h3>
+    <p class="sub">가격과 용량은 주문 화면(스마트스토어)에서 확인해 주세요.</p>
+    <div class="list" id="prods" role="group" aria-label="선물 상품">
+      <button class="prod" type="button" data-name="5년 전통된장" aria-pressed="true">
+        <span class="thumb"><span class="badge">BEST</span><img src="img/doenjang-5y.jpg" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'jar',textContent:'5년 전통된장'}))"></span>
+        <span class="brand">백연농가</span>
+        <span class="name">5년 전통된장</span>
+        <span class="price"><small>가격은 스토어에서</small></span>
+      </button>
+      <button class="prod" type="button" data-name="2년 된장" aria-pressed="false">
+        <span class="thumb"><img src="img/doenjang-set.jpg" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'jar',textContent:'2년 된장'}))"></span>
+        <span class="brand">백연농가</span>
+        <span class="name">2년 된장</span>
+        <span class="price"><small>가격은 스토어에서</small></span>
+      </button>
+      <button class="prod" type="button" data-name="2년 · 5년 된장 함께" aria-pressed="false">
+        <span class="thumb"><span class="badge">선물 추천</span><img src="img/doenjang-set.jpg" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'jar',textContent:'2년 · 5년 된장'}))"></span>
+        <span class="brand">백연농가</span>
+        <span class="name">2년 · 5년 된장 함께</span>
+        <span class="price"><small>가격은 스토어에서</small></span>
+      </button>
+      <button class="prod" type="button" data-name="장독대 장류 (스토어 전체 보기)" aria-pressed="false">
+        <span class="thumb"><img src="img/jangdok.jpg" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'jar',textContent:'장독대 장류'}))"></span>
+        <span class="brand">백연농가</span>
+        <span class="name">다른 장류 둘러보기</span>
+        <span class="price"><small>스토어 전체 상품</small></span>
+      </button>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h3>메시지 카드</h3>
+    <div class="themes" id="themes" role="group" aria-label="카드 디자인">
+      <button class="theme t-thanks" type="button" data-theme="thanks" aria-pressed="true">감사</button>
+      <button class="theme t-bday" type="button" data-theme="bday" aria-pressed="false">축하</button>
+      <button class="theme t-holiday" type="button" data-theme="holiday" aria-pressed="false">명절</button>
+      <button class="theme t-season" type="button" data-theme="season" aria-pressed="false">안부</button>
+    </div>
+    <div class="card-prev t-thanks" id="prev" aria-live="polite">
+      <p class="to" id="pv-to">받는 분께</p>
+      <p class="msg" id="pv-msg"></p>
+      <p class="from" id="pv-from">보내는 사람</p>
+    </div>
+    <div class="two">
+      <div class="field"><label for="to">받는 분</label><input id="to" maxlength="20" placeholder="예: 어머니"></div>
+      <div class="field"><label for="from">보내는 사람</label><input id="from" maxlength="20" placeholder="예: 막내 민지"></div>
+    </div>
+    <div class="field">
+      <label for="msg">메시지</label>
+      <textarea id="msg" maxlength="200"></textarea>
+      <span class="count" id="cnt">0/200</span>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h3>이렇게 보내요</h3>
+    <ol class="steps">
+      <li>상품과 메시지를 고른 뒤 ‘선물하기’를 누릅니다.</li>
+      <li>메시지가 복사되고 백연농가 스마트스토어가 열립니다.</li>
+      <li>주문할 때 받는 분 주소를 입력하고, 배송 메모에 메시지를 붙여 넣어 주세요.</li>
+    </ol>
+  </section>
+  <p class="note">주문·결제·배송은 네이버 스마트스토어에서 진행됩니다. 이 페이지는 선물 메시지를 준비하는 곳이며 결제 정보를 받지 않습니다. 문의 033-378-6452</p>
+</div>
+
+<div class="bar">
+  <div class="bar-in">
+    <p class="sel" id="sel">선택: <b>5년 전통된장</b></p>
+    <button class="gift" type="button" id="open">선물하기</button>
+  </div>
+</div>
+
+<div class="dim" id="dim"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sh-t" aria-hidden="true">
+  <h3 id="sh-t">선물 준비 완료</h3>
+  <p class="desc">아래 내용으로 스마트스토어에서 주문해 주세요.</p>
+  <div class="sum">
+    <div><span>상품</span><span id="s-prod"></span></div>
+    <div><span>받는 분</span><span id="s-to"></span></div>
+    <div><span>메시지</span><span id="s-msg"></span></div>
+  </div>
+  <div class="acts">
+    <a class="gift" id="go" href="https://smartstore.naver.com/100yeonfarm" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">메시지 복사하고 스토어로 이동</a>
+    <button class="ghost" type="button" id="share">메시지만 공유하기</button>
+    <button class="ghost" type="button" id="close">닫기</button>
+  </div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function(){
+  var $ = function(id){ return document.getElementById(id); };
+  var state = { prod:'5년 전통된장', theme:'thanks' };
+  var msg = $('msg'), to = $('to'), from = $('from'), prev = $('prev');
+
+  function press(group, btn){
+    group.querySelectorAll('button').forEach(function(b){ b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'); });
+  }
+  function setTheme(t){
+    state.theme = t;
+    prev.className = 'card-prev t-' + t;
+    $('themes').querySelectorAll('button').forEach(function(b){ b.setAttribute('aria-pressed', b.dataset.theme === t ? 'true' : 'false'); });
+  }
+  function render(){
+    $('pv-to').textContent = (to.value.trim() || '받는 분') + '께';
+    $('pv-msg').textContent = msg.value || ' ';
+    $('pv-from').textContent = 'from. ' + (from.value.trim() || '보내는 사람');
+    $('cnt').textContent = msg.value.length + '/200';
+    $('sel').innerHTML = '';
+    $('sel').append('선택: ', Object.assign(document.createElement('b'), { textContent: state.prod }));
+  }
+  function fullText(){
+    var t = to.value.trim(), f = from.value.trim();
+    return (t ? t + '께\n' : '') + msg.value.trim() + (f ? '\n- ' + f : '');
+  }
+  function toast(t){
+    var el = $('toast'); el.textContent = t; el.classList.add('on');
+    setTimeout(function(){ el.classList.remove('on'); }, 1800);
+  }
+  function copy(text){
+    try { return navigator.clipboard.writeText(text); } catch (e) { return Promise.reject(e); }
+  }
+
+  $('occ').addEventListener('click', function(e){
+    var b = e.target.closest('button'); if (!b) return;
+    press(this, b); setTheme(b.dataset.theme); msg.value = b.dataset.msg; render();
+  });
+  $('prods').addEventListener('click', function(e){
+    var b = e.target.closest('button'); if (!b) return;
+    press(this, b); state.prod = b.dataset.name; render();
+  });
+  $('themes').addEventListener('click', function(e){
+    var b = e.target.closest('button'); if (b) setTheme(b.dataset.theme);
+  });
+  [msg, to, from].forEach(function(el){ el.addEventListener('input', render); });
+
+  var sheet = $('sheet'), dim = $('dim'), lastFocus = null;
+  function openSheet(){
+    if (!msg.value.trim()) { toast('메시지를 입력해 주세요'); msg.focus(); return; }
+    $('s-prod').textContent = state.prod;
+    $('s-to').textContent = to.value.trim() || '-';
+    $('s-msg').textContent = msg.value.trim();
+    lastFocus = document.activeElement;
+    sheet.classList.add('on'); dim.classList.add('on'); sheet.setAttribute('aria-hidden','false');
+    $('go').focus();
+  }
+  function closeSheet(){
+    sheet.classList.remove('on'); dim.classList.remove('on'); sheet.setAttribute('aria-hidden','true');
+    if (lastFocus) lastFocus.focus();
+  }
+  $('open').addEventListener('click', openSheet);
+  $('close').addEventListener('click', closeSheet);
+  dim.addEventListener('click', closeSheet);
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && sheet.classList.contains('on')) closeSheet(); });
+
+  $('go').addEventListener('click', function(){
+    var text = '[선물: ' + state.prod + ']\n' + fullText();
+    copy(text).then(function(){ toast('메시지를 복사했어요'); }, function(){ toast('복사가 안 되면 메시지를 직접 옮겨 주세요'); });
+  });
+  $('share').addEventListener('click', function(){
+    var text = fullText();
+    if (navigator.share) { navigator.share({ title:'백연농가 선물 메시지', text:text }).catch(function(){}); }
+    else copy(text).then(function(){ toast('메시지를 복사했어요'); }, function(){ toast('복사할 수 없어요'); });
+  });
+
+  msg.value = $('occ').querySelector('[aria-pressed="true"]').dataset.msg;
+  render();
+})();
+</script>
+</body>
+</html>
